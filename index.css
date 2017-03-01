@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+.foo {
+  width: 100%;
+}
+
+@keyframes bounce {
+  0%, 50% { blah: .5; }
+  to { lol: 100vh; }
+}
+
+@media(min-width: 100px; max-width: 1000px) {
+  .foo {
+    bar: 88px;
+  }
+}
+
+@font-face {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'),
+       local('OpenSans'),
+       url('https://fonts.gstatic.com/s/...');
+}
