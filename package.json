@@ -1,9 +1,22 @@
 {
   "name": "babel-plugin-jsonify-css",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/jozanza/babel-plugin-jsonify-css.git"
+  },
+  "scripts": {
+    "test": "nyc ava"
+  },
   "dependencies": {
-    "jsonify-css": "0.0.3"
+    "jsonify-css": "0.0.4"
+  },
+  "devDependencies": {
+    "ava": "0.18.2",
+    "babel-core": "6.23.1",
+    "coveralls": "2.11.16",
+    "nyc": "10.1.2"
   }
 }

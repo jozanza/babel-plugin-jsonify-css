@@ -7,23 +7,28 @@ const exit = t => (path, state) => {
   const decls = getImportDecls(path);
   const filepath = getFilepath(path, state);
   const css = getCSS(filepath);
-  const styles = jsonify({ root: p.dirname(filepath) })(css)
-  const objify = obj =>
-    t.objectExpression(Object.keys(obj)
+  const styles = jsonify({ root: p.dirname(filepath) })(css);
+  const objify = obj => Array.isArray(obj)
+    ? t.arrayExpression(obj.map(x => 'string' === typeof x
+      ? t.stringLiteral(x)
+      : objify(x)))
+    : t.objectExpression(Object.keys(obj)
       .map(k => t.objectProperty(
         t.stringLiteral(k),
         'object' === typeof obj[k]
           ? objify(obj[k])
           : t.stringLiteral(obj[k])
-      )))
+      )));
   const memberImports = decls.member.map(x =>
     t.variableDeclaration('var', [
       t.variableDeclarator(
         t.identifier(x.imported.name),
-        t.arrayExpression(styles[x.imported.name].map(objify))
+        !(x.imported.name in styles)
+          ? (x.imported.name === 'raw' ? t.stringLiteral(css) : t.identifier('undefined'))
+          : t.arrayExpression(styles[x.imported.name].map(objify))
       )
-    ]))
-  const fullImports = decls.full.map(x =>
+    ]));
+  const fullImport = decls.full.map(x =>
     t.variableDeclaration('var', [
       t.variableDeclarator(
         t.identifier(x.local.name),
@@ -31,12 +36,12 @@ const exit = t => (path, state) => {
             styles.rule.concat(styles.media)
             .reduce((a, b) => Object.assign({}, a, b), {})
           ))
-    ]))
+    ]));
   path.replaceWithMultiple([
+    ...fullImport,
     ...memberImports,
-    ...fullImports,
-  ])
-}
+  ]);
+};
 
 const isImportingCSS = path =>
   '.css' === p.parse(path.node.source.value).ext;
