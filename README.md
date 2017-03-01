@@ -28,7 +28,7 @@ Add `jsonify-css` to the `plugins` section of your `.babelrc`:
 
 After setting the project, you may import CSS files like so:
 
-```
+```js
 // .css files now conveniently expose all styles as js objects
 import styles, {
   rule,
