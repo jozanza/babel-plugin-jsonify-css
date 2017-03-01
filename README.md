@@ -16,7 +16,9 @@
 
 ## Installation
 
-`$ yarn add --dev babel-plugin-jsonify-css`
+```
+$ yarn add --dev babel-plugin-jsonify-css
+```
 
 ## Usage
 
